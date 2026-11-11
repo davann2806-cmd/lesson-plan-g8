@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "2.1.0",
+  "standard": "MoEYS Cambodia Student-Centered 5E Mathematics Lesson Plan (Grade 8 Full Curriculum SPA)",
+  "grade": 8,
+  "subject": "គណិតវិទ្យា",
+  "language": "km",
+  "cascadingHierarchy": [
+    "ចំណងជើងជំពូក (Chapter Title: ជំពូកទី១ ដល់ ជំពូកទី៥)",
+    "ចំណងជើងមេរៀន (Lesson Title: មេរៀនទី១ ដល់ មេរៀនទី១៨)",
+    "ចំណងជើងចំណុចរង (Sub-topic Title: ៤៦ ម៉ោងសិក្សា × ៥០ នាទី)"
+  ],
+  "totalChapters": 5,
+  "totalLessons": 18,
+  "totalPeriods": 46,
+  "periodDurationMinutes": 50,
+  "paperSetup": {
+    "size": "A4",
+    "orientation": "landscape",
+    "widthMm": 297,
+    "heightMm": 210,
+    "paginatedDiscreteSheets": true,
+    "marginsMm": {
+      "top": 13,
+      "right": 14,
+      "bottom": 14,
+      "left": 18
+    }
+  },
+  "headerOrder": [
+    "មុខវិជ្ជា",
+    "ថ្នាក់ទី",
+    "ជំពូកទី",
+    "មេរៀនទី",
+    "ខ្លឹមសារមេរៀន (ចំណុចរង)",
+    "រយៈពេល",
+    "ដកស្រង់ចេញពី",
+    "វិធីសាស្ត្របង្រៀន",
+    "វត្ថុបំណង (វិជ្ជាសម្បទា, បំណិនសម្បទា, ចរិយាសម្បទា)",
+    "សម្ភារៈឧបទ្ទេស (សម្រាប់គ្រូ, សម្រាប់សិស្ស) — ស្ថិតនៅក្រោមវត្ថុបំណងជានិច្ច",
+    "កាលបរិច្ឆេទ",
+    "ចំនួនសិស្សសរុប"
+  ],
+  "tableColumns": [
+    { "key": "teacherActivity", "label": "សកម្មភាពគ្រូ", "widthPercent": 28 },
+    { "key": "lessonContent", "label": "ខ្លឹមសារមេរៀន", "widthPercent": 44 },
+    { "key": "studentActivity", "label": "សកម្មភាពសិស្ស", "widthPercent": 28 }
+  ],
+  "steps": [
+    { "step": 1, "title": "ជំហានទី១ ៖ រដ្ឋបាលថ្នាក់រៀន", "durationMinutes": 4, "bannerAlignment": "center" },
+    { "step": 2, "title": "ជំហានទី២ ៖ រំឭកមេរៀនចាស់ និងទំនាក់ទំនងមេរៀនថ្មី", "durationMinutes": 6, "bannerAlignment": "center" },
+    {
+      "step": 3,
+      "title": "ជំហានទី៣ ៖ មេរៀនប្រចាំថ្ងៃ (តាមលំនាំ 5E)",
+      "durationMinutes": 26,
+      "bannerAlignment": "center",
+      "phases5E": [
+        { "code": "E1", "name": "Engage — បំផុសគំនិត", "durationMinutes": 4 },
+        { "code": "E2", "name": "Explore — រុករកស្រាវជ្រាវ", "durationMinutes": 10 },
+        { "code": "E3", "name": "Explain — បកស្រាយពន្យល់ និងសំយោគបញ្ញត្តិ", "durationMinutes": 12 }
+      ]
+    },
+    {
+      "step": 4,
+      "title": "ជំហានទី៤ ៖ ពង្រឹងពុទ្ធិ និងវាយតម្លៃ",
+      "durationMinutes": 10,
+      "bannerAlignment": "center",
+      "phases5E": [
+        { "code": "E4", "name": "Elaborate — ពង្រីកចំណេះដឹង និងអនុវត្ត", "durationMinutes": 6 },
+        { "code": "E5", "name": "Evaluate — វាយតម្លៃលទ្ធផលសិក្សា", "durationMinutes": 4 }
+      ]
+    },
+    { "step": 5, "title": "ជំហានទី៥ ៖ បណ្ដាំផ្ញើ និងកិច្ចការផ្ទះ", "durationMinutes": 4, "bannerAlignment": "center" }
+  ],
+  "mathRendering": {
+    "engine": "KaTeX v0.16.11",
+    "inlineDelimiters": ["$...$", "\\(...\\)"],
+    "displayDelimiters": ["$$...$$", "\\[...\\]"],
+    "fractions": "\\dfrac{numerator}{denominator}"
+  }
+}

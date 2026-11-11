@@ -1,0 +1,907 @@
+/* ==========================================================================
+   កម្មវិធីកិច្ចតែងការបង្រៀនគណិតវិទ្យាថ្នាក់ទី៨ (SPA — ជំពូក › មេរៀន › ចំណុចរង)
+   ក្រដាសផ្ដេកបំបែកសន្លឹកដាច់ៗពីគ្នា (True Multi-Page A4 Landscape Word Sheets + KaTeX)
+   ========================================================================== */
+
+:root {
+  --word-blue: #185abd;
+  --word-blue-dark: #0f3d85;
+  --word-blue-soft: #eff6ff;
+  --desk-bg: #cbd2dc;
+  --paper-bg: #ffffff;
+  --ink-black: #000000;
+  --slate-900: #0f172a;
+  --slate-700: #334155;
+  --slate-500: #64748b;
+  --border-light: #cbd5e1;
+  --font-muol: 'Khmer OS Muol Light', 'Khmer OS Muol', 'Moul', serif;
+  --font-body: 'Khmer OS Siemreap', 'Khmer OS Battambang', 'Hanuman', 'Battambang', 'Noto Serif Khmer', serif;
+  --font-math: 'Cambria Math', 'Times New Roman', var(--font-body);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--desk-bg);
+  color: var(--ink-black);
+  font-family: var(--font-body);
+  font-size: 10.5pt;
+  line-height: 1.58;
+  -webkit-font-smoothing: antialiased;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   1. Screen-Only Microsoft Word Style Top Ribbon (Hidden when printing!)
+   -------------------------------------------------------------------------- */
+.word-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 120;
+  background: var(--word-blue);
+  color: #ffffff;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.24);
+}
+
+.word-toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.word-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  background: #ffffff;
+  color: var(--word-blue);
+  font-family: 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+}
+
+.word-doc-name {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  display: block;
+}
+
+.word-doc-sub {
+  font-size: 11px;
+  opacity: 0.92;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 520px;
+}
+
+.page-count-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.word-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.toolbar-btn {
+  appearance: none;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.35;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.toolbar-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.toolbar-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.toolbar-btn-primary {
+  background: #ffffff;
+  color: var(--word-blue-dark);
+  border-color: #ffffff;
+  font-weight: 700;
+}
+
+.toolbar-btn-primary:hover:not(:disabled) {
+  background: #f0f4ff;
+}
+
+.toolbar-btn.is-active {
+  background: #fde68a;
+  color: #1f2937;
+  border-color: #fcd34d;
+  font-weight: 700;
+}
+
+.toolbar-btn-danger {
+  background: rgba(254, 226, 226, 0.2);
+  border-color: rgba(254, 202, 202, 0.55);
+}
+
+/* --------------------------------------------------------------------------
+   2. SPA 3-Level Cascading Selector Bar (ជំពូក › មេរៀន › ចំណុចរង)
+   -------------------------------------------------------------------------- */
+.cascade-selector-bar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-light);
+  padding: 10px 14px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+}
+
+.cascade-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(210px, 1.15fr) minmax(210px, 1.15fr) minmax(240px, 1.45fr) auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.cascade-step {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.cascade-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.step-chip {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--word-blue);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cascade-select {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--slate-900);
+  background-color: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
+}
+
+.cascade-select:hover:not(:disabled) {
+  background-color: #ffffff;
+  border-color: #94a3b8;
+}
+
+.cascade-select:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: var(--word-blue);
+  box-shadow: 0 0 0 3px rgba(24, 90, 189, 0.15);
+}
+
+.cascade-select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.cascade-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 1px;
+}
+
+.nav-step-btn {
+  appearance: none;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: var(--slate-900);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.nav-step-btn:hover:not(:disabled) {
+  background: var(--word-blue-soft);
+  border-color: var(--word-blue);
+  color: var(--word-blue-dark);
+}
+
+.nav-step-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.period-counter-badge {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--word-blue-dark);
+  background: var(--word-blue-soft);
+  border: 1px solid #bfdbfe;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   3. Collapsible Quick-Search & Teacher Profile Drawers (Screen-Only)
+   -------------------------------------------------------------------------- */
+.utility-drawer {
+  background: #f8fafc;
+  border-bottom: 1px solid var(--border-light);
+  padding: 12px 16px;
+  color: var(--slate-900);
+  font-size: 12px;
+}
+
+.utility-drawer-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.drawer-title {
+  font-weight: 700;
+  color: var(--word-blue-dark);
+  font-size: 12.5px;
+  margin: 0;
+}
+
+.drawer-hint {
+  font-size: 11.5px;
+  color: var(--slate-500);
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 8px 12px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.profile-field label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--slate-700);
+}
+
+.profile-field input,
+.quick-search-input {
+  font-family: var(--font-body);
+  font-size: 12px;
+  padding: 6px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background: #ffffff;
+  color: var(--slate-900);
+}
+
+.profile-field input:focus,
+.quick-search-input:focus {
+  outline: none;
+  border-color: var(--word-blue);
+  box-shadow: 0 0 0 2px rgba(24, 90, 189, 0.15);
+}
+
+.quick-search-input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.search-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 7px;
+  max-height: 270px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.search-result-card {
+  appearance: none;
+  text-align: left;
+  font-family: var(--font-body);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 7px 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: border-color 100ms ease, background-color 100ms ease;
+}
+
+.search-result-card:hover {
+  border-color: var(--word-blue);
+  background: var(--word-blue-soft);
+}
+
+.search-result-card.is-active {
+  border-color: var(--word-blue);
+  background: var(--word-blue-soft);
+  box-shadow: inset 3px 0 0 var(--word-blue);
+}
+
+.search-card-top {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--word-blue-dark);
+}
+
+.search-card-sub {
+  font-size: 11.5px;
+  color: var(--slate-900);
+  line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   4. Word Print-Layout Desk & Discrete Separated A4 Landscape Sheets (297mm × 210mm)
+   -------------------------------------------------------------------------- */
+.desk-viewport {
+  width: 100%;
+  padding: 22px 12px 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: auto;
+}
+
+.page-scale-shell {
+  transform-origin: top center;
+  transition: transform 140ms ease;
+}
+
+/* Stack of distinct physical A4 Landscape sheets separated by clear desk gaps */
+.pages-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.a4-page {
+  /* Exact ISO A4 Landscape Sheet: 297mm wide × 210mm tall */
+  width: 297mm;
+  height: 210mm;
+  background: var(--paper-bg);
+  color: var(--ink-black);
+  padding: 13mm 14mm 14mm 18mm;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.2), 0 1px 3px rgba(15, 23, 42, 0.14);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Continuous canvas mode used only while actively editing text */
+.a4-page.a4-page-edit-mode {
+  height: auto;
+  min-height: 210mm;
+  overflow: visible;
+}
+
+.a4-page-body {
+  width: 100%;
+}
+
+.edit-mode-banner {
+  background: #eff6ff;
+  border: 1px dashed var(--word-blue);
+  color: var(--word-blue-dark);
+  padding: 6px 12px;
+  margin-bottom: 4mm;
+  border-radius: 4px;
+  font-size: 10pt;
+  text-align: center;
+}
+
+/* Official Word-style bottom margin page counter */
+.page-footer {
+  position: absolute;
+  bottom: 4.5mm;
+  left: 18mm;
+  right: 14mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9pt;
+  color: #374151;
+  pointer-events: none;
+}
+
+.page-footer-label {
+  opacity: 0.75;
+  font-size: 8.5pt;
+}
+
+.page-footer-num {
+  font-weight: 700;
+  color: #111827;
+}
+
+.a4-page.show-edit-guides [contenteditable='true'] {
+  background-color: rgba(24, 90, 189, 0.04);
+  border-radius: 2px;
+  outline: 1px dashed rgba(24, 90, 189, 0.28);
+}
+
+[contenteditable='true']:focus {
+  outline: 1.5px solid var(--word-blue);
+  background-color: rgba(24, 90, 189, 0.05);
+}
+
+/* --------------------------------------------------------------------------
+   5. Official Kingdom of Cambodia & MoEYS Document Header
+   -------------------------------------------------------------------------- */
+.kingdom-motto {
+  text-align: center;
+  margin-bottom: 1.5mm;
+}
+
+.muol-heading {
+  font-family: var(--font-muol);
+  font-weight: 400;
+  font-size: 11pt;
+  line-height: 1.7;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.tacteing-ornament {
+  display: block;
+  margin: 0.8mm auto 1.5mm;
+  width: 92px;
+  height: 13px;
+}
+
+.school-admin-block {
+  margin-top: -5mm;
+  margin-bottom: 2mm;
+  font-size: 10pt;
+  line-height: 1.58;
+}
+
+.school-admin-block p {
+  margin: 0;
+}
+
+.doc-title-block {
+  text-align: center;
+  margin: 1.5mm 0 3.5mm;
+}
+
+.doc-main-title {
+  font-family: var(--font-muol);
+  font-weight: 400;
+  font-size: 12pt;
+  margin: 0;
+  line-height: 1.75;
+}
+
+.doc-sub-title {
+  margin: 0;
+  font-size: 10pt;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   6. Single-Column Vertical Dash (-) Metadata, Objectives & Materials Below
+   -------------------------------------------------------------------------- */
+.meta-section {
+  margin-bottom: 3.5mm;
+  font-size: 10.2pt;
+  line-height: 1.6;
+}
+
+.dash-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dash-list > li {
+  margin-bottom: 0.7mm;
+  padding-left: 3.5mm;
+  text-indent: -3.5mm;
+}
+
+.sub-plus-list {
+  margin: 0.6mm 0 1mm 0;
+  padding-left: 7.5mm;
+  list-style: none;
+}
+
+.sub-plus-list > li {
+  margin-bottom: 0.6mm;
+  padding-left: 3.8mm;
+  text-indent: -3.8mm;
+}
+
+.meta-label {
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   7. Standard 3-Column Microsoft Word Table (តារាង ៣ ជួរឈរ × ៥ ជំហានចំកណ្ដាល)
+   -------------------------------------------------------------------------- */
+.lesson-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1pt solid #000000;
+  table-layout: fixed;
+  font-size: 10.2pt;
+  line-height: 1.55;
+}
+
+.lesson-table th,
+.lesson-table td {
+  border: 1pt solid #000000;
+  padding: 2mm 2.6mm;
+  vertical-align: top;
+  word-wrap: break-word;
+}
+
+.col-teacher {
+  width: 28%;
+}
+
+.col-content {
+  width: 44%;
+}
+
+.col-student {
+  width: 28%;
+}
+
+.lesson-table thead th {
+  font-family: var(--font-muol);
+  font-weight: 400;
+  font-size: 10.2pt;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #f3f4f6;
+  padding: 2.3mm 2mm;
+}
+
+/* Major Step Banner Row — Strictly CENTERED */
+.step-banner-cell {
+  font-family: var(--font-muol);
+  font-weight: 400;
+  font-size: 10.2pt;
+  background-color: #f9fafb;
+  text-align: center !important;
+  padding: 2mm 3mm !important;
+}
+
+.step-duration {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 10.2pt;
+  margin-left: 4px;
+}
+
+.phase-5e-badge {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 1mm;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cell-list {
+  margin: 0;
+  padding-left: 4.5mm;
+}
+
+.cell-list li {
+  margin-bottom: 0.8mm;
+}
+
+.content-subhead {
+  margin: 0 0 0.9mm 0;
+  font-weight: 700;
+}
+
+.content-block {
+  margin: 0 0 1.4mm 0;
+}
+
+.content-block:last-child {
+  margin-bottom: 0;
+}
+
+.dots-line {
+  letter-spacing: 0.4px;
+  color: #111111;
+}
+
+.math-box {
+  border: 0.75pt solid #222222;
+  background-color: #fcfcfc;
+  padding: 1.8mm 2.8mm;
+  margin: 1.2mm 0;
+}
+
+/* Publication-Grade LaTeX (KaTeX Computer Modern) Typography */
+.katex {
+  font-size: 1.04em !important;
+  color: #000000;
+  line-height: 1.22;
+}
+
+.katex-display {
+  margin: 1.5mm 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.katex-display > .katex {
+  font-size: 1.08em !important;
+}
+
+.katex .mtext {
+  font-family: 'KaTeX_Main', var(--font-body);
+}
+
+/* Textbook Black & White SVG Geometry Diagrams */
+.diagram-box {
+  margin: 1.5mm 0;
+  padding: 1.4mm;
+  border: 0.6pt solid #444444;
+  text-align: center;
+  background: #ffffff;
+}
+
+.diagram-box svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.diagram-caption {
+  font-size: 9pt;
+  font-style: italic;
+  margin-top: 0.8mm;
+}
+
+/* --------------------------------------------------------------------------
+   8. Post-Table Reflection & Formal Signature Block
+   -------------------------------------------------------------------------- */
+.reflection-box {
+  margin-top: 3.5mm;
+  border: 1pt solid #000000;
+  padding: 2.2mm 3.2mm;
+  font-size: 10.2pt;
+  page-break-inside: avoid;
+}
+
+.reflection-title {
+  font-weight: 700;
+  margin: 0 0 0.8mm 0;
+}
+
+.signature-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+  margin-top: 5mm;
+  font-size: 10.2pt;
+  line-height: 1.6;
+  page-break-inside: avoid;
+}
+
+.signature-table td {
+  width: 50%;
+  border: none;
+  text-align: center;
+  vertical-align: top;
+  padding: 0 3mm;
+}
+
+.sig-role-muol {
+  font-family: var(--font-muol);
+  font-weight: 400;
+  font-size: 10.2pt;
+  margin-top: 1.2mm;
+}
+
+.sig-space {
+  height: 16mm;
+}
+
+/* --------------------------------------------------------------------------
+   9. Responsive Layout for Mobile Phones & Tablets
+   -------------------------------------------------------------------------- */
+@media (max-width: 1040px) {
+  .cascade-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cascade-step-subtopic {
+    grid-column: 1 / -1;
+  }
+
+  .cascade-nav-group {
+    grid-column: 1 / -1;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 640px) {
+  .cascade-inner {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .word-doc-sub {
+    max-width: 240px;
+  }
+
+  .desk-viewport {
+    padding: 14px 6px 36px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10. 1-to-1 Exact WYSIWYG Print Output (@media print)
+       Each on-screen .a4-page sheet prints onto ONE A4 Landscape page!
+   -------------------------------------------------------------------------- */
+@page {
+  size: A4 landscape;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 297mm !important;
+  }
+
+  .no-print,
+  .word-toolbar,
+  .cascade-selector-bar,
+  .utility-drawer,
+  .edit-mode-banner {
+    display: none !important;
+  }
+
+  .desk-viewport {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  .page-scale-shell {
+    transform: none !important;
+    height: auto !important;
+    width: 297mm !important;
+  }
+
+  .pages-stack {
+    display: block !important;
+    gap: 0 !important;
+  }
+
+  .a4-page {
+    width: 297mm !important;
+    height: 209.6mm !important;
+    padding: 13mm 14mm 14mm 18mm !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    page-break-after: always;
+    break-after: page;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .a4-page:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  .a4-page.show-edit-guides [contenteditable='true'] {
+    background: transparent !important;
+    outline: none !important;
+  }
+
+  .lesson-table thead th,
+  .step-banner-cell,
+  .math-box {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

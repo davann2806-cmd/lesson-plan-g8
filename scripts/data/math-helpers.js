@@ -536,6 +536,56 @@
     return node;
   }
 
+  // រូបមន្តគោលដាក់ចំកណ្ដាលជួរ ($$...$$ Display LaTeX) សម្រាប់គ្រប់ ៤៦ ម៉ោងសិក្សា (Rule 6)
+  const displayFormulas = {
+    'g8-l01-h1': '$$\\mathbb{Q} = \\left\\{\\,\\dfrac{a}{b} \\;\\middle|\\; a, b \\in \\mathbb{Z},\\; b \\neq 0\\,\\right\\}, \\qquad \\dfrac{-a}{b} = \\dfrac{a}{-b} = -\\dfrac{a}{b}$$',
+    'g8-l01-h2': '$$\\dfrac{a}{b} < \\dfrac{c}{d} \\iff ad < bc \\quad (b > 0,\\; d > 0)$$',
+    'g8-l01-h3': '$$\\dfrac{a}{b} \\pm \\dfrac{c}{d} = \\dfrac{ad \\pm bc}{bd} \\quad (b \\neq 0,\\; d \\neq 0)$$',
+    'g8-l01-h4': '$$\\dfrac{a}{b} \\times \\dfrac{c}{d} = \\dfrac{ac}{bd}, \\qquad \\dfrac{a}{b} \\div \\dfrac{c}{d} = \\dfrac{a}{b} \\times \\dfrac{d}{c} = \\dfrac{ad}{bc}$$',
+    'g8-l02-h1': '$$a^m \\times a^n = a^{m+n}, \\qquad \\dfrac{a^m}{a^n} = a^{m-n} \\quad (a \\neq 0)$$',
+    'g8-l02-h2': '$$(a^m)^n = a^{mn}, \\qquad (ab)^n = a^n b^n, \\qquad \\left(\\dfrac{a}{b}\\right)^n = \\dfrac{a^n}{b^n} \\quad (b \\neq 0)$$',
+    'g8-l02-h3': '$$a^0 = 1,\\quad a^{-n} = \\dfrac{1}{a^n}\\;(a \\neq 0), \\qquad A = c \\times 10^n\\;(1 \\le c < 10,\\; n \\in \\mathbb{Z})$$',
+    'g8-l03-h1': '$$\\dfrac{a}{b} = \\dfrac{c}{d} \\iff a \\times d = b \\times c \\quad (b \\neq 0,\\; d \\neq 0)$$',
+    'g8-l03-h2': '$$y = kx \\;\\left(\\dfrac{y}{x} = k\\right), \\qquad y = \\dfrac{k}{x} \\;(x \\times y = k,\\; k \\neq 0)$$',
+    'g8-l03-h3': '$$I = \\dfrac{P \\times r \\times t}{100}, \\qquad A = P + I$$',
+    'g8-l04-h1': '$$1\\,\\text{km} = 1\\,000\\,\\text{m}, \\qquad 1\\,\\text{t} = 1\\,000\\,\\text{kg}, \\qquad 1\\,\\text{L} = 1\\,000\\,\\text{mL}$$',
+    'g8-l04-h2': '$$1\\,\\text{ha} = 10\\,000\\,\\text{m}^2, \\qquad 1\\,\\text{dm}^3 = 1\\,\\text{L}, \\qquad v = \\dfrac{d}{t}$$',
+    'g8-l05-h1': '$$ax^n + bx^n = (a + b)x^n, \\qquad A(x) - B(x) = A(x) + [-B(x)]$$',
+    'g8-l05-h2': '$$(a + b)(c + d) = ac + ad + bc + bd$$',
+    'g8-l05-h3': '$$(a \\pm b)^2 = a^2 \\pm 2ab + b^2, \\qquad (a - b)(a + b) = a^2 - b^2$$',
+    'g8-l05-h4': '$$ab + ac = a(b + c), \\qquad a^2 - b^2 = (a - b)(a + b), \\qquad a^2 \\pm 2ab + b^2 = (a \\pm b)^2$$',
+    'g8-l06-h1': '$$\\dfrac{A \\cdot K}{B \\cdot K} = \\dfrac{A}{B} \\quad (B \\neq 0,\\; K \\neq 0)$$',
+    'g8-l06-h2': '$$\\dfrac{A}{B} \\times \\dfrac{C}{D} = \\dfrac{A \\cdot C}{B \\cdot D}, \\qquad \\dfrac{A}{B} \\div \\dfrac{C}{D} = \\dfrac{A}{B} \\times \\dfrac{D}{C} = \\dfrac{A \\cdot D}{B \\cdot C}$$',
+    'g8-l06-h3': '$$\\dfrac{A}{M} \\pm \\dfrac{B}{M} = \\dfrac{A \\pm B}{M}, \\qquad \\dfrac{A}{B} \\pm \\dfrac{C}{D} = \\dfrac{AD \\pm BC}{BD}$$',
+    'g8-l07-h1': '$$ax + b = cx + d \\iff (a - c)x = d - b \\implies x = \\dfrac{d - b}{a - c} \\quad (a \\neq c)$$',
+    'g8-l07-h2': '$$\\dfrac{A(x)}{m} = \\dfrac{B(x)}{n} \\iff n \\cdot A(x) = m \\cdot B(x) \\quad (m \\neq 0,\\; n \\neq 0)$$',
+    'g8-l07-h3': '$$d = v \\times t \\implies t = \\dfrac{d}{v}, \\qquad \\text{សមីការតុល្យភាព ៖ } A(x) = B(x)$$',
+    'g8-l08-h1': '$$a < b \\implies \\begin{cases} a + c < b + c \\\\ ac < bc & (c > 0) \\\\ ac > bc & (c < 0) \\end{cases}$$',
+    'g8-l08-h2': '$$ax + b > 0 \\implies \\begin{cases} x > -\\dfrac{b}{a} & (a > 0) \\\\[6pt] x < -\\dfrac{b}{a} & (a < 0) \\end{cases}$$',
+    'g8-l09-h1': '$$M(x,\\, y) \\;:\\; x \\text{ ជាអាប់ស៊ីស (លើ } Ox\\text{)}, \\quad y \\text{ ជាអរដោនេ (លើ } Oy\\text{)}$$',
+    'g8-l09-h2': '$$y = ax + b \\quad \\left(x = 0 \\Rightarrow y = b,\\;\\; y = 0 \\Rightarrow x = -\\dfrac{b}{a}\\right)$$',
+    'g8-l10-h1': '$$f_i = \\dfrac{n_i}{N} \\times 100\\%, \\qquad \\alpha_i = \\dfrac{n_i}{N} \\times 360^\\circ, \\qquad N = \\sum n_i$$',
+    'g8-l10-h2': '$$\\bar{x} = \\dfrac{x_1 n_1 + x_2 n_2 + \\dots + x_k n_k}{N}$$',
+    'g8-l11-h1': '$$\\Omega = \\{\\omega_1, \\omega_2, \\dots, \\omega_n\\}, \\qquad A \\subseteq \\Omega, \\qquad n(A) \\le n(\\Omega)$$',
+    'g8-l11-h2': '$$P(A) = \\dfrac{n(A)}{n(\\Omega)}, \\qquad 0 \\le P(A) \\le 1, \\qquad P(\\overline{A}) = 1 - P(A)$$',
+    'g8-l12-h1': '$$AB = A\'B\',\\; \\widehat{B} = \\widehat{B\'},\\; BC = B\'C\' \\implies \\triangle ABC \\cong \\triangle A\'B\'C\' \\;\\text{(ជ.ម.ជ)}$$',
+    'g8-l12-h2': '$$\\triangle ABC \\cong \\triangle A\'B\'C\' \\quad \\text{តាមករណី (ម.ជ.ម) ឬ (ជ.ជ.ជ)}$$',
+    'g8-l12-h3': '$$\\widehat{B} = \\widehat{B\'} = 90^\\circ,\\; AC = A\'C\',\\; AB = A\'B\' \\implies \\triangle ABC \\cong \\triangle A\'B\'C\'$$',
+    'g8-l13-h1': '$$\\widehat{A} + \\widehat{B} + \\widehat{C} + \\widehat{D} = 360^\\circ, \\qquad ABCD \\text{ ប្រលេឡូក្រាម} \\iff AB \\parallel DC,\\; AD \\parallel BC$$',
+    'g8-l13-h2': '$$AC = BD \\;\\text{(ចតុកោណកែង)}, \\qquad AC \\perp BD \\;\\text{(ចតុកោណស្មើ)}, \\qquad AC = BD \\text{ និង } AC \\perp BD \\;\\text{(ការេ)}$$',
+    'g8-l13-h3': '$$MN \\parallel BC,\\; MN = \\dfrac{1}{2}BC, \\qquad EF = \\dfrac{AB + DC}{2}$$',
+    'g8-l14-h1': '$$S_{\\text{ចតុកោណកែង}} = a \\times b, \\qquad S_{\\text{ប្រលេឡូក្រាម}} = b \\times h, \\qquad S_{\\triangle} = \\dfrac{1}{2} \\times b \\times h$$',
+    'g8-l14-h2': '$$S_{\\text{ចតុកោណព្នាយ}} = \\dfrac{(a + b) \\times h}{2}, \\qquad S_{\\text{ចតុកោណស្មើ}} = \\dfrac{d_1 \\times d_2}{2}$$',
+    'g8-l15-h1': '$$OH \\perp AB \\implies HA = HB, \\qquad (d) \\text{ ប៉ះ } \\mathcal{C}(O, R) \\text{ ត្រង់ } T \\iff OT \\perp (d)$$',
+    'g8-l15-h2': '$$C = 2\\pi R,\\quad S = \\pi R^2,\\quad l = \\dfrac{n^\\circ}{360^\\circ} \\times 2\\pi R,\\quad S_{\\text{ចម្រៀក}} = \\dfrac{n^\\circ}{360^\\circ} \\times \\pi R^2$$',
+    'g8-l16-h1': '$$OA = OB = OC = R \\;\\text{(ផ្ចិតរង្វង់ចារឹកក្រៅ)}, \\qquad ID = IE = IF = r \\;\\text{(ផ្ចិតរង្វង់ចារឹកក្នុង)}$$',
+    'g8-l16-h2': '$$AG = \\dfrac{2}{3}AM,\\quad GM = \\dfrac{1}{3}AM,\\quad AG = 2GM$$',
+    'g8-l17-h1': '$$S_{\\text{ខាង}} = 2\\pi r h, \\qquad S_{\\text{សរុប}} = 2\\pi r h + 2\\pi r^2, \\qquad V = B \\times h = \\pi r^2 h$$',
+    'g8-l17-h2': '$$S_{\\text{ខាងពីរ៉ាមីត}} = \\dfrac{1}{2} P \\cdot d, \\qquad V_{\\text{ពីរ៉ាមីត}} = \\dfrac{1}{3} B \\cdot h, \\qquad V_{\\text{កោន}} = \\dfrac{1}{3} \\pi r^2 h$$',
+    'g8-l18-h1': '$$k = \\dfrac{d_{\\text{ប្លង់}}}{d_{\\text{ពិត}}} = \\dfrac{1}{N} \\quad (\\text{គិតជាឯកតាប្រវែងដូចគ្នា})$$',
+    'g8-l18-h2': '$$d_{\\text{ប្លង់}} = d_{\\text{ពិត}} \\times k, \\qquad d_{\\text{ពិត}} = \\dfrac{d_{\\text{ប្លង់}}}{k}, \\qquad S_{\\text{ពិត}} = \\dfrac{S_{\\text{ប្លង់}}}{k^2}$$'
+  };
+
   function finalizeCurriculum() {
     if (isFinalized) return window.G8LessonLibrary;
     isFinalized = true;
@@ -548,8 +598,15 @@
       p.chapterNumberKh = ch.chapterNumberKh;
       p.chapterTitle = ch.chapterTitle;
 
-      p.subTopicPlain = stripToPlainLabel(p.subTopic);
-      p.subTopicLatex = toLatexString(p.subTopic);
+      // បម្លែងចំណងជើងរងឱ្យមានលេខមេរៀន.លេខចំណុចរង ស្តង់ដារ ឧ. «១.៤. ...» (Rule 2 & Rule 4)
+      const numberedSub = String(p.subTopic || '').replace(
+        /^[០-៩]+\.\s*/,
+        `${p.lessonNumberKh}.${p.periodNumberKh}. `
+      );
+      p.subTopic = numberedSub;
+      p.subTopicPlain = stripToPlainLabel(numberedSub);
+      p.subTopicLatex = toLatexString(numberedSub);
+      p.displayFormula = displayFormulas[p.id] || '';
 
       p.objectives = mapDeepLatex(p.objectives);
       p.step2 = mapDeepLatex(p.step2);
@@ -565,6 +622,7 @@
     F,
     chapters,
     diagrams,
+    displayFormulas,
     periods: [],
     toLatexString,
     finalizeCurriculum

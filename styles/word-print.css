@@ -570,40 +570,52 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   6. Single-Column Vertical Dash (-) Metadata, Objectives & Materials Below
+   6. Indented Metadata Header with Vertically Aligned "៖" (សញ្ញាភ្នែកមាន់ស្មើជួរគ្នា)
    -------------------------------------------------------------------------- */
 .meta-section {
-  margin-bottom: 3.5mm;
+  margin: 0 0 3.5mm 8mm;
   font-size: 10.2pt;
-  line-height: 1.6;
+  line-height: 1.56;
 }
 
-.dash-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.meta-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: none !important;
+  table-layout: fixed;
 }
 
-.dash-list > li {
-  margin-bottom: 0.7mm;
-  padding-left: 3.5mm;
-  text-indent: -3.5mm;
+.meta-table col.meta-col-label {
+  width: 52mm;
 }
 
-.sub-plus-list {
-  margin: 0.6mm 0 1mm 0;
-  padding-left: 7.5mm;
-  list-style: none;
+.meta-table col.meta-col-value {
+  width: auto;
 }
 
-.sub-plus-list > li {
-  margin-bottom: 0.6mm;
-  padding-left: 3.8mm;
-  text-indent: -3.8mm;
+.meta-table td {
+  border: none !important;
+  padding: 0.42mm 0 !important;
+  vertical-align: top;
 }
 
-.meta-label {
+.meta-table td.meta-label-cell {
   font-weight: 700;
+  white-space: nowrap;
+  padding-right: 2mm !important;
+}
+
+.meta-table tr.meta-sub-row td.meta-label-cell {
+  padding-left: 6mm !important;
+}
+
+.meta-table td.meta-value-cell {
+  word-wrap: break-word;
+}
+
+.meta-colon {
+  font-weight: 700;
+  margin-right: 1.2mm;
 }
 
 /* --------------------------------------------------------------------------
@@ -728,6 +740,65 @@ body {
 
 .katex .mtext {
   font-family: 'KaTeX_Main', var(--font-body);
+}
+
+.math-formula {
+  font-family: 'KaTeX_Main', var(--font-math);
+  text-align: center;
+  font-size: 11pt;
+  margin: 1.2mm 0;
+}
+
+/* Cambodian / French Potence Vertical Division Table (ប្រមាណវិធីចែកបញ្ឈរ) */
+.layout-pair-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: none !important;
+  margin: 1mm 0;
+}
+
+.layout-pair-table > tbody > tr > td {
+  border: none !important;
+  padding: 0.8mm 2mm !important;
+  vertical-align: top;
+  width: 50%;
+}
+
+.potence-table {
+  border-collapse: collapse;
+  border: none !important;
+  width: auto !important;
+  font-family: var(--font-math);
+  font-size: 10.2pt;
+  line-height: 1.3;
+}
+
+.potence-table td {
+  border: none !important;
+  padding: 0.5mm 1.8mm !important;
+  white-space: nowrap;
+}
+
+.potence-table td.pot-left {
+  text-align: right;
+  border-right: 1pt solid #000000 !important;
+}
+
+.potence-table td.pot-divisor {
+  text-align: left;
+  border-bottom: 1pt solid #000000 !important;
+  font-weight: 700;
+}
+
+.potence-table td.pot-quotient {
+  text-align: left;
+  font-weight: 700;
+}
+
+.potence-sub {
+  border-bottom: 0.75pt solid #000000;
+  display: inline-block;
+  min-width: 24px;
 }
 
 /* Textbook Black & White SVG Geometry Diagrams */

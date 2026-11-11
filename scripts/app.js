@@ -8,9 +8,9 @@
 (function () {
   'use strict';
 
-  const STORAGE_PROFILE_KEY = 'moeys_g8_spa_profile_v1';
-  const STORAGE_ACTIVE_ID_KEY = 'moeys_g8_spa_active_id_v1';
-  const STORAGE_EDITS_PREFIX = 'moeys_g8_spa_custom_v1_';
+  const STORAGE_PROFILE_KEY = 'moeys_g8_spa_profile_v2';
+  const STORAGE_ACTIVE_ID_KEY = 'moeys_g8_spa_active_id_v2';
+  const STORAGE_EDITS_PREFIX = 'moeys_g8_spa_custom_v2_';
   const BLANK_ID = 'blank';
 
   const library = window.G8LessonLibrary;
@@ -185,28 +185,32 @@
 
   function getFormattedProfileTexts(profile) {
     const provinceLine = profile.province
-      ? `មន្ទីរអប់រំ យុវជន និងកីឡា ${escapeHtml(profile.province)}`
-      : 'មន្ទីរអប់រំ យុវជន និងកីឡា រាជធានី/ខេត្ត....................................';
+      ? /^មន្ទីរ/.test(profile.province)
+        ? escapeHtml(profile.province)
+        : `មន្ទីរអប់រំ យុវជន និងកីឡា${escapeHtml(profile.province)}`
+      : 'មន្ទីរអប់រំ យុវជន និងកីឡាខេត្តកំពង់ធំ';
 
     const districtLine = profile.district
-      ? `ការិយាល័យអប់រំ យុវជន និងកីឡា ${escapeHtml(profile.district)}`
-      : 'ការិយាល័យអប់រំ យុវជន និងកីឡា ក្រុង/ស្រុក/ខណ្ឌ......................';
+      ? /^ការិយាល័យ/.test(profile.district)
+        ? escapeHtml(profile.district)
+        : `ការិយាល័យអប់រំ យុវជន និងកីឡា${escapeHtml(profile.district)}`
+      : 'ការិយាល័យអប់រំ យុវជន និងកីឡាស្រុកកំពង់ស្វាយ';
 
-    let schoolLine = 'វិទ្យាល័យ / អនុវិទ្យាល័យ............................................................';
+    let schoolRaw = 'អនុវិទ្យាល័យព្រះក្រសាំង';
     if (profile.school) {
-      const hasPrefix = /^(វិទ្យាល័យ|អនុវិទ្យាល័យ|សាលា)/.test(profile.school);
-      schoolLine = hasPrefix
-        ? escapeHtml(profile.school)
-        : `វិទ្យាល័យ / អនុវិទ្យាល័យ ${escapeHtml(profile.school)}`;
+      schoolRaw = /^(វិទ្យាល័យ|អនុវិទ្យាល័យ|សាលា)/.test(profile.school)
+        ? profile.school
+        : `អនុវិទ្យាល័យ${profile.school}`;
     }
+    const schoolLine = escapeHtml(schoolRaw);
 
     const dateText = profile.date
       ? escapeHtml(profile.date)
-      : 'ថ្ងៃ........................ ទី......... ខែ........................ ឆ្នាំ២០២......';
+      : 'ថ្ងៃ.................. ទី...... ខែ.................. ឆ្នាំ២០២......';
 
     const teacherMeta = profile.teacher
       ? `<strong>${escapeHtml(profile.teacher)}</strong>`
-      : '................................................................................................................................................';
+      : '............................................................................';
 
     const studentsText = profile.students
       ? escapeHtml(profile.students)
@@ -216,11 +220,11 @@
       ? escapeHtml(profile.lunar)
       : 'ថ្ងៃ.................. ខែ............ ឆ្នាំ......... ព.ស. ២៥៦...';
 
-    let signDateText = 'ធ្វើនៅ..................... ថ្ងៃទី...... ខែ............ ឆ្នាំ២០២...';
+    let signDateText = 'ធ្វើនៅព្រះក្រសាំង ថ្ងៃទី...... ខែ............ ឆ្នាំ២០២...';
     if (profile.signdate) {
       signDateText = /^ធ្វើនៅ/.test(profile.signdate)
         ? escapeHtml(profile.signdate)
-        : `ធ្វើនៅ ${escapeHtml(profile.signdate)}`;
+        : `ធ្វើនៅ${escapeHtml(profile.signdate)}`;
     }
 
     const teacherSign = profile.teacher
@@ -231,6 +235,7 @@
       provinceLine,
       districtLine,
       schoolLine,
+      schoolShort: schoolRaw,
       dateText,
       teacherMeta,
       studentsText,
@@ -268,7 +273,7 @@
     btnResetLesson.hidden = !hasSavedCustomEdit(activeId);
   }
 
-  // Official Cambodian MoEYS Document Header + Footer Blocks
+  // Official Cambodian MoEYS Document Header + Footer Blocks (អនុវិទ្យាល័យព្រះក្រសាំង — Rule 1)
   function buildDocumentTopHeaderHtml(profile) {
     const t = getFormattedProfileTexts(profile);
     return `
@@ -291,8 +296,7 @@
       </div>
 
       <div class="doc-title-block editable-region">
-        <p class="doc-main-title">កិច្ចតែងការបង្រៀនគណិតវិទ្យា</p>
-        <p class="doc-sub-title">(តាមគោលវិធីសិស្សមជ្ឈមណ្ឌល និងវិធីបង្រៀនបែបរិះរក 5E)</p>
+        <h1 class="doc-main-title">កិច្ចតែងការបង្រៀន</h1>
       </div>
     `;
   }
@@ -332,7 +336,7 @@
   }
 
   /**
-   * ទម្រង់គំរូទទេស្តង់ដារ 5E (គោរពតាមក្បួន ៖ សម្ភារៈឧបទ្ទេសនៅក្រោមវត្ថុបំណង និងជំហានទាំង ៥ នៅចំកណ្ដាល)
+   * ទម្រង់គំរូទទេស្តង់ដារ 5E (គោរពតាមជំនាញ lesson-plan ទាំង ៧ ប្រការ)
    */
   function buildBlankMasterHtml(profile) {
     const t = getFormattedProfileTexts(profile);
@@ -340,32 +344,78 @@
       ${buildDocumentTopHeaderHtml(profile)}
 
       <section class="meta-section editable-region">
-        <ul class="dash-list">
-          <li><span class="meta-label">- កាលបរិច្ឆេទ ៖</span> ${t.dateText}</li>
-          <li><span class="meta-label">- មុខវិជ្ជា ៖</span> គណិតវិទ្យា</li>
-          <li><span class="meta-label">- ថ្នាក់ទី ៖</span> ៨ (ប្រាំបី)</li>
-          <li><span class="meta-label">- ជំពូកទី...... ៖</span> ..........................................................................................................................................................</li>
-          <li><span class="meta-label">- មេរៀនទី...... ៖</span> .........................................................................................................................................................</li>
-          <li><span class="meta-label">- ខ្លឹមសារមេរៀន ៖</span> ...................................................................................................................................................</li>
-          <li><span class="meta-label">- រយៈពេល ៖</span> ៥០ នាទី (១ ម៉ោងសិក្សា)</li>
-          <li><span class="meta-label">- បង្រៀនដោយគ្រូ ៖</span> ${t.teacherMeta}</li>
-          <li><span class="meta-label">- ដកស្រង់ចេញពី ៖</span> សៀវភៅសិក្សាគោលគណិតវិទ្យាថ្នាក់ទី៨ ទំព័រទី............ និងសៀវភៅគ្រូទំព័រទី............</li>
-          <li>
-            <span class="meta-label">- វត្ថុបំណង ៖</span> ក្រោយពីរៀនចប់មេរៀននេះ សិស្សមានសមត្ថភាព ៖
-            <ul class="sub-plus-list">
-              <li><span class="meta-label">+ វិជ្ជាសម្បទា ៖</span> ...............................................................................................................................................................</li>
-              <li><span class="meta-label">+ បំណិនសម្បទា ៖</span> ............................................................................................................................................................</li>
-              <li><span class="meta-label">+ ចរិយាសម្បទា ៖</span> ............................................................................................................................................................</li>
-            </ul>
-          </li>
-          <li>
-            <span class="meta-label">- សម្ភារៈឧបទ្ទេស ៖</span>
-            <ul class="sub-plus-list">
-              <li><span class="meta-label">+ សម្រាប់គ្រូ ៖</span> សៀវភៅសិក្សាគោល សៀវភៅគ្រូ កិច្ចតែងការបង្រៀន បន្ទាត់ ហ្វឺត សន្លឹកកិច្ចការក្រុម ..........................................</li>
-              <li><span class="meta-label">+ សម្រាប់សិស្ស ៖</span> សៀវភៅសិក្សាគោល សៀវភៅសរសេរ ក្តារឆ្នួន ប៊ិច បន្ទាត់ សម្ភារៈគណិតវិទ្យា ................................................</li>
-            </ul>
-          </li>
-        </ul>
+        <table class="meta-table">
+          <colgroup>
+            <col class="meta-col-label" />
+            <col class="meta-col-value" />
+          </colgroup>
+          <tbody>
+            <tr>
+              <td class="meta-label-cell">- មុខវិជ្ជា</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>គណិតវិទ្យា ថ្នាក់ទី៨</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- ខ្លឹមសារមេរៀន</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>មេរៀនទី...... ...................................................................................................................</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- ចំណងជើងរង</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>...... . ...... . ..................................................................................................................</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- រយៈពេល</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>៥០ នាទី</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- បង្រៀនដោយ</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>${t.teacherMeta}</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- កាលបរិច្ឆេទ</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>${t.dateText}</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- វត្ថុបំណង</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>ក្រោយពីរៀនចប់មេរៀននេះ សិស្សមានសមត្ថភាព ៖</td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">+ វិជ្ជាសម្បទា</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>................................................................................................................................................</td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">+ បំណិនសម្បទា</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>................................................................................................................................................</td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">+ ចរិយាសម្បទា</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>................................................................................................................................................</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- គោលវិធី និងយុទ្ធវិធីបង្រៀន</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span></td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">- គោលវិធី</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>សិស្សមជ្ឈមណ្ឌល</td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">- យុទ្ធវិធីបង្រៀន</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>តាមបែបរិះរក (5E)</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- សម្ភារៈឧបទ្ទេស</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span></td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">+ សម្រាប់គ្រូ</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>សៀវភៅសិក្សាគោល សៀវភៅគ្រូ កិច្ចតែងការបង្រៀន បន្ទាត់ ហ្វឺត សន្លឹកកិច្ចការក្រុម ..........................................</td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">+ សម្រាប់សិស្ស</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>សៀវភៅសិក្សាគោល សៀវភៅសរសេរ ក្តារឆ្នួន ប៊ិច បន្ទាត់ សម្ភារៈគណិតវិទ្យា ................................................</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
       <table class="lesson-table">
@@ -424,7 +474,7 @@
                 <li>ឱ្យសិស្សយកកិច្ចការផ្ទះដាក់លើតុ និងហៅតំណាងសិស្សឡើងកែលើក្តារខៀន។</li>
                 <li>សម្របសម្រួល ផ្ទៀងផ្ទាត់ចម្លើយ កែលម្អចំណុចខ្វះខាត និងផ្តល់ការលើកទឹកចិត្ត។</li>
               </ul>
-              <p class="content-subhead" style="margin-top: 2mm;">២.២. រំលឹកមេរៀនចាស់ ៖</p>
+              <p class="content-subhead" style="margin-top: 2mm;">២.២. រំលឹកមេរៀនចាស់ភ្ជាប់មេរៀនថ្មី ៖</p>
               <ul class="cell-list">
                 <li>សួរសំណួររំលឹកចំណេះដឹងមូលដ្ឋានដែលទាក់ទងនឹងខ្លឹមសារមេរៀនថ្មី៖</li>
                 <li>១. ............................................................?</li>
@@ -459,7 +509,7 @@
           </tr>
           <tr>
             <td>
-              <span class="phase-5e-badge">១. ដំណាក់កាលបំផុសចំណាប់អារម្មណ៍ (E1)</span>
+              <span class="phase-5e-badge">១. ដំណាក់កាលបំផុសចំណាប់អារម្មណ៍ (E1 — ៤ នាទី)</span>
               <ul class="cell-list">
                 <li>លើកយកស្ថានភាពបញ្ហាជាក់ស្តែង រូបភាព ឬសំណួរគន្លឹះភ្ជាប់ជីវភាពរស់នៅ៖<br />
                   «...................................................................?»</li>
@@ -468,8 +518,8 @@
             </td>
             <td>
               <p class="content-block">
-                <strong>មេរៀនទី...... ៖ ...........................................</strong><br />
-                <strong>ខ្លឹមសាររង ៖ ..............................................</strong>
+                <strong>មេរៀនទី...... ...............................................</strong><br />
+                <strong>...... . ...... . .............................................</strong>
               </p>
               <p class="content-subhead">ស្ថានភាពបញ្ហា / សំណួរគន្លឹះ ៖</p>
               <p class="dots-line content-block">
@@ -487,7 +537,7 @@
 
           <tr>
             <td>
-              <span class="phase-5e-badge">២. ដំណាក់កាលរុករក និងស្រាវជ្រាវ (E2)</span>
+              <span class="phase-5e-badge">២. ដំណាក់កាលរុករក និងស្រាវជ្រាវ (E2 — ១០ នាទី)</span>
               <ul class="cell-list">
                 <li>រៀបចំសិស្សជាក្រុមតូចៗ (ឬជាដៃគូ) តាមគោលវិធីសិស្សមជ្ឈមណ្ឌល។</li>
                 <li>ចែកសន្លឹកកិច្ចការរុករក និងណែនាំលក្ខខណ្ឌ ព្រមទាំងរយៈពេលធ្វើការងារក្រុម។</li>
@@ -512,7 +562,7 @@
 
           <tr>
             <td>
-              <span class="phase-5e-badge">៣. ដំណាក់កាលបកស្រាយ និងសំយោគ (E3)</span>
+              <span class="phase-5e-badge">៣. ដំណាក់កាលបកស្រាយ និងសំយោគ (E3 — ១២ នាទី)</span>
               <ul class="cell-list">
                 <li>អញ្ជើញតំណាងក្រុមឡើងបង្ហាញ និងបកស្រាយលទ្ធផលនៃការរុករក។</li>
                 <li>សម្របសម្រួលឱ្យក្រុមដទៃសួរសំណួរ ផ្ទៀងផ្ទាត់ និងផ្តល់មតិកែលម្អ។</li>
@@ -522,7 +572,9 @@
             <td>
               <p class="content-subhead">និយមន័យ / រូបមន្ត / ទ្រឹស្តីបទ (LaTeX) ៖</p>
               <div class="math-box">
-                $$f(x) = ax + b$$
+                ........................................................................................<br />
+                $$f(x) = \dots$$
+                ........................................................................................
               </div>
               <p class="content-subhead" style="margin-top: 2mm;">ឧទាហរណ៍គំរូ ៖</p>
               <p class="dots-line content-block">
@@ -545,7 +597,7 @@
           </tr>
           <tr>
             <td>
-              <span class="phase-5e-badge">៤. ដំណាក់កាលពង្រីកចំណេះដឹង (E4)</span>
+              <span class="phase-5e-badge">៤. ដំណាក់កាលពង្រីកចំណេះដឹង (E4 — ៦ នាទី)</span>
               <ul class="cell-list">
                 <li>ដាក់លំហាត់អនុវត្ត ឬចំណោទក្នុងស្ថានភាពថ្មី ដើម្បីឱ្យសិស្សប្រើប្រាស់ចំណេះដឹងដែលទើបរៀនទៅដោះស្រាយបញ្ហាស៊ីជម្រៅ។</li>
                 <li>តាមដានការធ្វើលំហាត់របស់សិស្ស និងជួយណែនាំបន្ថែម។</li>
@@ -567,7 +619,7 @@
 
           <tr>
             <td>
-              <span class="phase-5e-badge">៥. ដំណាក់កាលវាយតម្លៃលទ្ធផលសិក្សា (E5)</span>
+              <span class="phase-5e-badge">៥. ដំណាក់កាលវាយតម្លៃលទ្ធផលសិក្សា (E5 — ៤ នាទី)</span>
               <ul class="cell-list">
                 <li>វាស់ស្ទង់ការយល់ដឹងរបស់សិស្សធៀបនឹងវត្ថុបំណងមេរៀនទាំង ៣ តាមរយៈសំណួរផ្ទាល់មាត់ ក្តារឆ្នួន ឬសន្លឹកកិច្ចការខ្លី។</li>
                 <li>ឱ្យសិស្សជួយសង្ខេបចំណុចសំខាន់ៗនៃមេរៀនឡើងវិញ។</li>
@@ -576,7 +628,7 @@
             <td>
               <p class="content-subhead">សំណួរ / លំហាត់វាយតម្លៃ ៖</p>
               <p class="dots-line content-block">....................................................................................</p>
-              <p class="content-subhead">ចម្លើយ / លក្ខណៈវិនិច្ឆ័យ ៖</p>
+              <p class="content-subhead">ចម្លើយ និងលក្ខណៈវិនិច្ឆ័យ ៖</p>
               <p class="dots-line content-block">....................................................................................</p>
             </td>
             <td>
@@ -624,11 +676,10 @@
   }
 
   /**
-   * បង្កើតកិច្ចតែងការពេញលេញសម្រាប់ម៉ោងសិក្សានីមួយៗនៃថ្នាក់ទី៨ (គោរពតាមក្បួនទាំង ៧ នៃជំនាញ lesson-plan)
+   * បង្កើតកិច្ចតែងការបង្រៀនពេញលេញសម្រាប់ម៉ោងសិក្សានីមួយៗនៃថ្នាក់ទី៨ (គោរពតាមក្បួនទាំង ៧ នៃជំនាញ lesson-plan)
    */
   function buildPeriodMasterHtml(period, profile) {
     const t = getFormattedProfileTexts(profile);
-    const totalPeriodsKh = toKhmerNum(period.totalPeriods);
 
     const reviewQuestionsHtml = period.step2.reviewQuestions
       .map((q, idx) => `<li>${toKhmerNum(idx + 1)}. ${q}</li>`)
@@ -641,6 +692,7 @@
     const homeworkSolutionHtml = period.step2.homeworkSolution.join('<br />');
     const activitiesHtml = period.step3.e2.activities.join('<br /><br />');
     const rulesHtml = period.step3.e3.rules.join('<br />');
+    const displayFormulaHtml = period.displayFormula ? `\n${period.displayFormula}` : '';
     const diagramHtml = period.step3.e3.diagramHtml || '';
     const examplesHtml = period.step3.e3.examples
       .map((ex) => `<p class="content-block">${ex}</p>`)
@@ -649,34 +701,80 @@
     return `
       ${buildDocumentTopHeaderHtml(profile)}
 
-      <!-- ៣. ព័ត៌មានទូទៅ វត្ថុបំណង និងសម្ភារៈឧបទ្ទេសនៅក្រោមវត្ថុបំណង (សញ្ញាត្រេមួយជួរឈរ) -->
+      <!-- ៣. ព័ត៌មានទូទៅ វត្ថុបំណង គោលវិធី/យុទ្ធវិធី និងសម្ភារៈឧបទ្ទេស (តម្រឹមសញ្ញា «៖» ស្មើជួរគ្នាពីលើដល់ក្រោម — Rule 2) -->
       <section class="meta-section editable-region">
-        <ul class="dash-list">
-          <li><span class="meta-label">- កាលបរិច្ឆេទ ៖</span> ${t.dateText}</li>
-          <li><span class="meta-label">- មុខវិជ្ជា ៖</span> គណិតវិទ្យា</li>
-          <li><span class="meta-label">- ថ្នាក់ទី ៖</span> ៨ (ប្រាំបី)</li>
-          <li><span class="meta-label">- ជំពូកទី${period.chapterNumberKh} ៖</span> ${period.chapterTitle}</li>
-          <li><span class="meta-label">- មេរៀនទី${period.lessonNumberKh} ៖</span> <strong>${period.lessonTitle}</strong></li>
-          <li><span class="meta-label">- ខ្លឹមសារមេរៀន ៖</span> <strong>${period.subTopicLatex}</strong> <em>(ម៉ោងទី${period.periodNumberKh} នៃ ${totalPeriodsKh} ម៉ោងសិក្សា)</em></li>
-          <li><span class="meta-label">- រយៈពេល ៖</span> ៥០ នាទី (១ ម៉ោងសិក្សា)</li>
-          <li><span class="meta-label">- បង្រៀនដោយគ្រូ ៖</span> ${t.teacherMeta}</li>
-          <li><span class="meta-label">- ដកស្រង់ចេញពី ៖</span> សៀវភៅសិក្សាគោលគណិតវិទ្យាថ្នាក់ទី៨ ទំព័រទី ${period.pages} និងសៀវភៅគ្រូទំព័រទី ${period.teacherPages}</li>
-          <li>
-            <span class="meta-label">- វត្ថុបំណង ៖</span> ក្រោយពីរៀនចប់មេរៀននេះ សិស្សមានសមត្ថភាព ៖
-            <ul class="sub-plus-list">
-              <li><span class="meta-label">+ វិជ្ជាសម្បទា ៖</span> ${period.objectives.knowledge}</li>
-              <li><span class="meta-label">+ បំណិនសម្បទា ៖</span> ${period.objectives.skill}</li>
-              <li><span class="meta-label">+ ចរិយាសម្បទា ៖</span> ${period.objectives.attitude}</li>
-            </ul>
-          </li>
-          <li>
-            <span class="meta-label">- សម្ភារៈឧបទ្ទេស ៖</span>
-            <ul class="sub-plus-list">
-              <li><span class="meta-label">+ សម្រាប់គ្រូ ៖</span> ${period.materialsTeacher}</li>
-              <li><span class="meta-label">+ សម្រាប់សិស្ស ៖</span> ${period.materialsStudent}</li>
-            </ul>
-          </li>
-        </ul>
+        <table class="meta-table">
+          <colgroup>
+            <col class="meta-col-label" />
+            <col class="meta-col-value" />
+          </colgroup>
+          <tbody>
+            <tr>
+              <td class="meta-label-cell">- មុខវិជ្ជា</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>គណិតវិទ្យា ថ្នាក់ទី៨</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- ខ្លឹមសារមេរៀន</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>មេរៀនទី${period.lessonNumberKh} ${period.lessonTitle}</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- ចំណងជើងរង</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>${period.subTopicLatex}</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- រយៈពេល</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>៥០ នាទី</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- បង្រៀនដោយ</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>${t.teacherMeta}</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- កាលបរិច្ឆេទ</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>${t.dateText}</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- វត្ថុបំណង</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>ក្រោយពីរៀនចប់មេរៀននេះ សិស្សមានសមត្ថភាព ៖</td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">+ វិជ្ជាសម្បទា</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>${period.objectives.knowledge}</td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">+ បំណិនសម្បទា</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>${period.objectives.skill}</td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">+ ចរិយាសម្បទា</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>${period.objectives.attitude}</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- គោលវិធី និងយុទ្ធវិធីបង្រៀន</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span></td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">- គោលវិធី</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>សិស្សមជ្ឈមណ្ឌល</td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">- យុទ្ធវិធីបង្រៀន</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>តាមបែបរិះរក (5E)</td>
+            </tr>
+            <tr>
+              <td class="meta-label-cell">- សម្ភារៈឧបទ្ទេស</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span></td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">+ សម្រាប់គ្រូ</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>${period.materialsTeacher}</td>
+            </tr>
+            <tr class="meta-sub-row">
+              <td class="meta-label-cell">+ សម្រាប់សិស្ស</td>
+              <td class="meta-value-cell"><span class="meta-colon">៖</span>${period.materialsStudent}</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
       <!-- ៤. តារាងស្តង់ដារ ៣ ជួរឈរ និង ៥ ជំហាននៅចំកណ្ដាល (បញ្ជ្រាប 5E — សរុប ៥០ នាទី) -->
@@ -772,13 +870,13 @@
               <ul class="cell-list">
                 <li>លើកយកស្ថានភាពបញ្ហាភ្ជាប់ជីវភាពរស់នៅ ដើម្បីបំផុសការគិតរបស់សិស្ស ៖<br />
                   «${period.step3.e1.hookQuestion}»</li>
-                <li>ឱ្យសិស្សប៉ាន់ស្មានចម្លើយបឋម រួចសរសេរចំណងជើងមេរៀន និងចំណុចរងលើក្តារខៀន។</li>
+                <li>ឱ្យសិស្សប៉ាន់ស្មានចម្លើយបឋម រួចសរសេរចំណងជើងមេរៀន និងចំណងជើងរងលើក្តារខៀន។</li>
               </ul>
             </td>
             <td>
               <p class="content-block">
-                <strong>មេរៀនទី${period.lessonNumberKh} ៖ ${period.lessonTitle}</strong><br />
-                <strong>ខ្លឹមសាររង ៖ ${period.subTopicLatex}</strong>
+                <strong>មេរៀនទី${period.lessonNumberKh} ${period.lessonTitle}</strong><br />
+                <strong>${period.subTopicLatex}</strong>
               </p>
               <p class="content-subhead">ស្ថានភាពបញ្ហា / គំនិតគន្លឹះ ៖</p>
               <p class="content-block">${period.step3.e1.problemSummary}</p>
@@ -787,7 +885,7 @@
               <ul class="cell-list">
                 <li>សង្កេត អាន និងគិតពិចារណាលើស្ថានភាពបញ្ហាដែលគ្រូបានលើកឡើង។</li>
                 <li>ចូលរួមបញ្ចេញមតិ និងទស្សន៍ទាយចម្លើយបឋមដោយសេរី។</li>
-                <li>កត់ត្រាចំណងជើងមេរៀន និងចំណុចរងចូលក្នុងសៀវភៅសរសេរ។</li>
+                <li>កត់ត្រាចំណងជើងមេរៀន និងចំណងជើងរងចូលក្នុងសៀវភៅសរសេរ។</li>
               </ul>
             </td>
           </tr>
@@ -826,7 +924,7 @@
             </td>
             <td>
               <p class="content-subhead">និយមន័យ / រូបមន្ត / ទ្រឹស្តីបទ ៖</p>
-              <div class="math-box">${rulesHtml}</div>
+              <div class="math-box">${rulesHtml}${displayFormulaHtml}</div>
               ${diagramHtml}
               <p class="content-subhead" style="margin-top: 1.6mm;">ឧទាហរណ៍គំរូ ៖</p>
               ${examplesHtml}
@@ -954,18 +1052,14 @@
   }
 
   function getFooterLabelText() {
-    if (activeId === BLANK_ID) {
-      return 'ទម្រង់គំរូទទេស្តង់ដារ 5E — គណិតវិទ្យាថ្នាក់ទី៨';
-    }
-    const p = periodMap.get(activeId);
-    if (!p) return 'កិច្ចតែងការបង្រៀនគណិតវិទ្យាថ្នាក់ទី៨ (5E)';
-    return `ជំពូកទី${p.chapterNumberKh} • មេរៀនទី${p.lessonNumberKh} ៖ ${p.lessonTitle} (ម៉ោងទី${p.periodNumberKh})`;
+    const t = getFormattedProfileTexts(getProfileValues());
+    return `កិច្ចតែងការបង្រៀន — ${t.schoolShort}`;
   }
 
   function createBlankSheet() {
     const sheet = document.createElement('article');
     sheet.className = 'a4-page';
-    sheet.setAttribute('aria-label', 'កិច្ចតែងការបង្រៀនគណិតវិទ្យាថ្នាក់ទី៨');
+    sheet.setAttribute('aria-label', 'កិច្ចតែងការបង្រៀន');
 
     const body = document.createElement('div');
     body.className = 'a4-page-body';
@@ -1107,7 +1201,7 @@
     for (let idx = 0; idx < topElements.length; idx++) {
       const el = topElements[idx];
 
-      // 1. Metadata section (.meta-section with ul.dash-list)
+      // 1. Metadata section (.meta-section with table.meta-table)
       if (el.classList.contains('meta-section')) {
         const wholeClone = el.cloneNode(true);
         pageCtx.body.appendChild(wholeClone);
@@ -1117,42 +1211,52 @@
         }
 
         pageCtx.body.removeChild(wholeClone);
-        const srcList = el.querySelector('ul.dash-list');
-        if (!srcList) {
+        const srcMetaTable = el.querySelector('table.meta-table');
+        if (!srcMetaTable) {
           pageCtx = createBlankSheet();
           pageCtx.body.appendChild(wholeClone);
           continue;
         }
 
-        let metaWrap = document.createElement('section');
-        metaWrap.className = el.className;
-        let ulWrap = document.createElement('ul');
-        ulWrap.className = srcList.className;
-        metaWrap.appendChild(ulWrap);
-        pageCtx.body.appendChild(metaWrap);
+        const buildEmptyMetaSection = () => {
+          const sec = document.createElement('section');
+          sec.className = el.className;
+          const tbl = document.createElement('table');
+          tbl.className = srcMetaTable.className;
+          const cg = srcMetaTable.querySelector('colgroup');
+          if (cg) tbl.appendChild(cg.cloneNode(true));
+          const tb = document.createElement('tbody');
+          tbl.appendChild(tb);
+          sec.appendChild(tbl);
+          return { sec, tb };
+        };
 
-        Array.from(srcList.children).forEach((li) => {
-          const liClone = li.cloneNode(true);
-          ulWrap.appendChild(liClone);
-          if (pageCtx.body.offsetHeight > pageCtx.maxBodyHeight && ulWrap.children.length > 1) {
-            ulWrap.removeChild(liClone);
+        let metaCtx = buildEmptyMetaSection();
+        pageCtx.body.appendChild(metaCtx.sec);
+
+        const metaRows = Array.from(srcMetaTable.querySelectorAll('tbody > tr'));
+        metaRows.forEach((tr) => {
+          const trClone = tr.cloneNode(true);
+          metaCtx.tb.appendChild(trClone);
+          if (pageCtx.body.offsetHeight > pageCtx.maxBodyHeight && metaCtx.tb.children.length > 1) {
+            metaCtx.tb.removeChild(trClone);
             pageCtx = createBlankSheet();
-            metaWrap = document.createElement('section');
-            metaWrap.className = el.className;
-            ulWrap = document.createElement('ul');
-            ulWrap.className = srcList.className;
-            metaWrap.appendChild(ulWrap);
-            pageCtx.body.appendChild(metaWrap);
-            ulWrap.appendChild(liClone);
+            metaCtx = buildEmptyMetaSection();
+            pageCtx.body.appendChild(metaCtx.sec);
+            metaCtx.tb.appendChild(trClone);
           }
         });
         continue;
       }
 
-      // 2. Main 3-Column × 5-Step Lesson Table
+      // 2. Main 3-Column × 5-Step Lesson Table — start cleanly on Sheet 2 after Page 1 metadata
       if (el.tagName === 'TABLE' && el.classList.contains('lesson-table')) {
         const srcTbody = el.querySelector('tbody');
         if (!srcTbody) continue;
+
+        if (pageCtx.body.querySelector('.meta-section')) {
+          pageCtx = createBlankSheet();
+        }
 
         const rowQueue = Array.from(srcTbody.children).map((r) => r.cloneNode(true));
         let tblCtx = null;
@@ -1343,7 +1447,7 @@
     selectSubtopicEl.innerHTML = lesson.periods
       .map((p) => {
         const editedMark = hasSavedCustomEdit(p.id) ? ' ✎កែរួច' : '';
-        return `<option value="${p.id}">ម៉ោងទី${p.periodNumberKh} ៖ ${escapeHtml(p.subTopicPlain)} (ទំព័រ ${p.pages})${editedMark}</option>`;
+        return `<option value="${p.id}">${escapeHtml(p.subTopicPlain)} (៥០ នាទី)${editedMark}</option>`;
       })
       .join('');
   }
@@ -1354,7 +1458,7 @@
       populateLessonSelectForChapter(BLANK_ID);
       populateSubtopicSelectForLesson(BLANK_ID);
       if (activeDocSubEl) {
-        activeDocSubEl.textContent = 'ទម្រង់គំរូទទេស្តង់ដារ 5E — សម្រាប់បោះពុម្ពសរសេរដៃ ឬកែសម្រួលផ្ទាល់';
+        activeDocSubEl.textContent = 'អនុវិទ្យាល័យព្រះក្រសាំង — ទម្រង់ទទេស្តង់ដារ 5E (ក្រដាស A4 ផ្ដេក)';
       }
       if (periodIndexPillEl) periodIndexPillEl.textContent = 'គំរូទទេ 5E';
       if (btnPrevPeriod) btnPrevPeriod.disabled = true;
@@ -1373,7 +1477,7 @@
     if (selectSubtopicEl) selectSubtopicEl.value = period.id;
 
     if (activeDocSubEl) {
-      activeDocSubEl.textContent = `ជំពូកទី${period.chapterNumberKh} › មេរៀនទី${period.lessonNumberKh} ៖ ${period.lessonTitle} › ${period.subTopicPlain}`;
+      activeDocSubEl.textContent = `អនុវិទ្យាល័យព្រះក្រសាំង — ជំពូកទី${period.chapterNumberKh} › មេរៀនទី${period.lessonNumberKh} ${period.lessonTitle} › ${period.subTopicPlain}`;
     }
     if (periodIndexPillEl) {
       periodIndexPillEl.textContent = `ម៉ោងទី ${toKhmerNum(idx + 1)} / ${toKhmerNum(allPeriods.length)}`;
@@ -1545,12 +1649,23 @@
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
 
+    // Handle \begin{cases} ... \end{cases} cleanly for Word export
+    s = s.replace(/\\begin\{cases\}([\s\S]*?)\\end\{cases\}/g, (_m, inner) => {
+      const rows = inner
+        .split(/\\\\(?:\[\d+pt\])?/)
+        .map((r) => r.replace(/&amp;/g, ' ').trim())
+        .filter(Boolean);
+      return '{ ' + rows.join(' ; ') + ' }';
+    });
+
     // Preserve escaped braces & percent before stripping TeX commands
     s = s.replace(/\\\{/g, '&#123;').replace(/\\\}/g, '&#125;').replace(/\\%/g, '%');
 
     s = s.replace(/\\text\{([^{}]*)\}/g, '<span class="word-mtext">$1</span>');
     s = s.replace(/\\textbf\{([^{}]*)\}/g, '<b>$1</b>');
     s = s.replace(/\\mathbf\{([^{}]*)\}/g, '<b>$1</b>');
+    s = s.replace(/\\mathcal\{([^{}]*)\}/g, '<i>$1</i>');
+    s = s.replace(/\\overline\{([^{}]*)\}/g, '<span style="text-decoration:overline;">$1</span>');
     s = s.replace(/\\bar\{([^{}]*)\}/g, '$1&#772;');
     s = s.replace(/\\widehat\{([^{}]*)\}/g, '∠$1');
 
@@ -1558,6 +1673,7 @@
       s = s.replace(/\\d?frac\{([^{}]*)\}\{([^{}]*)\}/g, '($1)/($2)');
     }
 
+    s = s.replace(/\\sqrt\[([^{}\]]*)\]\{([^{}]*)\}/g, '<sup>$1</sup>√($2)');
     s = s.replace(/\\sqrt\{([^{}]*)\}/g, '√($1)');
     s = s.replace(/\^\{([^{}]*)\}/g, '<sup>$1</sup>');
     s = s.replace(/_\{([^{}]*)\}/g, '<sub>$1</sub>');
@@ -1571,6 +1687,14 @@
       [/\\;/g, '&nbsp;'],
       [/\\:/g, '&nbsp;'],
       [/\\!/g, ''],
+      [/\\dots|\\ldots/g, '…'],
+      [/\\sum/g, '∑'],
+      [/\\Omega/g, 'Ω'],
+      [/\\alpha/g, 'α'],
+      [/\\beta/g, 'β'],
+      [/\\gamma/g, 'γ'],
+      [/\\theta/g, 'θ'],
+      [/\\Delta/g, 'Δ'],
       [/\\times/g, ' × '],
       [/\\div/g, ' ÷ '],
       [/\\cdot/g, ' · '],
@@ -1589,6 +1713,8 @@
       [/\\perp/g, ' ⊥ '],
       [/\\in/g, ' ∈ '],
       [/\\notin/g, ' ∉ '],
+      [/\\subset/g, ' ⊂ '],
+      [/\\subseteq/g, ' ⊆ '],
       [/\\cup/g, ' ∪ '],
       [/\\cap/g, ' ∩ '],
       [/\\emptyset/g, '∅'],
@@ -1601,6 +1727,7 @@
       [/\\mathbb\{Z\}/g, 'ℤ'],
       [/\\mathbb\{Q\}/g, 'ℚ'],
       [/\\mathbb\{R\}/g, 'ℝ'],
+      [/\\middle\|/g, ' | '],
       [/\\left\|/g, '|'],
       [/\\right\|/g, '|'],
       [/\\left/g, ''],
@@ -1683,12 +1810,12 @@
 
   function getWordFilename() {
     if (activeId === BLANK_ID) {
-      return 'ទម្រង់ស្តង់ដារកិច្ចតែងការបង្រៀនគណិតវិទ្យាថ្នាក់ទី៨_5E_ផ្តេក.doc';
+      return 'ទម្រង់ស្តង់ដារ_កិច្ចតែងការបង្រៀន_ផ្តេក.doc';
     }
     const p = periodMap.get(activeId);
-    if (!p) return 'កិច្ចតែងការបង្រៀនគណិតវិទ្យាថ្នាក់ទី៨_5E_ផ្តេក.doc';
+    if (!p) return 'កិច្ចតែងការបង្រៀន_គណិតវិទ្យាថ្នាក់ទី៨_5E.doc';
     const cleanTitle = p.lessonTitle.replace(/\s+/g, '_');
-    return `កិច្ចតែងការ_គណិតG8_ជំពូក${p.chapterNumberKh}_មេរៀនទី${p.lessonNumberKh}_${cleanTitle}_ម៉ោងទី${p.periodNumberKh}.doc`;
+    return `កិច្ចតែងការបង្រៀន_G8_មេរៀនទី${p.lessonNumberKh}_${cleanTitle}_${p.lessonNumberKh}.${p.periodNumberKh}.doc`;
   }
 
   async function exportToWordDoc() {
@@ -1737,14 +1864,14 @@
         font-weight: normal;
       }
       .doc-main-title { font-size: 12pt; margin: 0; }
-      .doc-sub-title { font-style: italic; text-align: center; margin: 0; }
       .school-admin-block p { margin: 0; font-size: 10pt; }
-      ul.dash-list, ul.sub-plus-list { list-style-type: none; margin: 0; padding: 0; }
-      ul.dash-list > li { margin-bottom: 2pt; font-size: 10.2pt; }
-      ul.sub-plus-list { margin-left: 18pt; margin-top: 2pt; margin-bottom: 3pt; }
-      ul.sub-plus-list > li { margin-bottom: 2pt; }
-      .meta-label, .content-subhead { font-weight: bold; }
-      .content-subhead { margin: 0 0 2pt 0; }
+      .meta-section { margin-left: 22.7pt; margin-bottom: 10pt; }
+      table.meta-table { width: 100%; border-collapse: collapse; border: none; table-layout: fixed; }
+      table.meta-table td { border: none; padding: 1.5pt 0; vertical-align: top; font-family: "Khmer OS Siemreap", "Hanuman", serif; font-size: 10.2pt; }
+      table.meta-table td.meta-label-cell { width: 147.4pt; font-weight: bold; white-space: nowrap; padding-right: 6pt; }
+      table.meta-table tr.meta-sub-row td.meta-label-cell { padding-left: 17pt; }
+      .meta-colon { font-weight: bold; margin-right: 3pt; }
+      .content-subhead { font-weight: bold; margin: 0 0 2pt 0; }
       .content-block { margin: 0 0 4pt 0; }
       table.lesson-table {
         width: 100%;
@@ -1782,9 +1909,17 @@
       .math-box { border: 0.75pt solid #222222; padding: 5pt 7pt; margin: 4pt 0; background: #FCFCFC; }
       .diagram-box { border: 0.6pt solid #444444; padding: 4pt; margin: 4pt 0; text-align: center; }
       .diagram-caption { font-size: 9pt; font-style: italic; margin-top: 2pt; }
-      .word-math-inline { font-family: "Cambria Math", "Times New Roman", serif; font-size: 10.6pt; }
-      .word-math-display { font-family: "Cambria Math", "Times New Roman", serif; font-size: 11pt; text-align: center; margin: 5pt 0; }
+      .word-math-inline { font-family: "Cambria Math", "Times New Roman", serif; font-size: 10.8pt; }
+      .word-math-display { font-family: "Cambria Math", "Times New Roman", serif; font-size: 11.2pt; text-align: center; margin: 5pt 0; font-weight: normal; }
       .word-mtext { font-family: "Khmer OS Siemreap", "Hanuman", serif; }
+      table.layout-pair-table { width: 100%; border-collapse: collapse; border: none; margin: 3pt 0; }
+      table.layout-pair-table > tbody > tr > td { border: none; padding: 2pt 4pt; vertical-align: top; width: 50%; }
+      table.potence-table { border-collapse: collapse; border: none; margin: 4pt 0; }
+      table.potence-table td { border: none; padding: 1.5pt 5pt; font-family: "Cambria Math", "Times New Roman", serif; }
+      table.potence-table td.pot-left { text-align: right; border-right: 1pt solid #000000; }
+      table.potence-table td.pot-divisor { text-align: left; border-bottom: 1pt solid #000000; font-weight: bold; }
+      table.potence-table td.pot-quotient { text-align: left; font-weight: bold; }
+      .potence-sub { border-bottom: 0.75pt solid #000000; }
       .reflection-box { border: 1pt solid #000000; padding: 6pt 8pt; margin-top: 10pt; }
       .reflection-title { font-weight: bold; margin: 0 0 3pt 0; }
       .signature-table { width: 100%; border: none; margin-top: 14pt; text-align: center; }
@@ -1796,7 +1931,7 @@
       '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
       'xmlns:w="urn:schemas-microsoft-com:office:word" ' +
       'xmlns="http://www.w3.org/TR/REC-html40">' +
-      '<head><meta charset="utf-8"><title>កិច្ចតែងការបង្រៀនគណិតវិទ្យាថ្នាក់ទី៨</title>' +
+      '<head><meta charset="utf-8"><title>កិច្ចតែងការបង្រៀន</title>' +
       `<style>${wordStyles}</style></head>` +
       `<body><div class="WordSection1">${exportRoot.innerHTML}</div></body></html>`;
 

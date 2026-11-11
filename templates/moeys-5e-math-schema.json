@@ -1,13 +1,20 @@
 {
-  "schemaVersion": "2.1.0",
-  "standard": "MoEYS Cambodia Student-Centered 5E Mathematics Lesson Plan (Grade 8 Full Curriculum SPA)",
+  "schemaVersion": "3.0.0",
+  "standard": "Cambodian MoEYS Mathematics Lesson Plan — អនុវិទ្យាល័យព្រះក្រសាំង (A4 Landscape, Aligned ៖ Metadata, 5E & KaTeX LaTeX)",
+  "schoolDefaults": {
+    "department": "មន្ទីរអប់រំ យុវជន និងកីឡាខេត្តកំពង់ធំ",
+    "office": "ការិយាល័យអប់រំ យុវជន និងកីឡាស្រុកកំពង់ស្វាយ",
+    "school": "អនុវិទ្យាល័យព្រះក្រសាំង",
+    "mainDocumentTitle": "កិច្ចតែងការបង្រៀន",
+    "signatureLocation": "ធ្វើនៅព្រះក្រសាំង ថ្ងៃទី...... ខែ............ ឆ្នាំ២០២..."
+  },
   "grade": 8,
-  "subject": "គណិតវិទ្យា",
+  "subjectLine": "គណិតវិទ្យា ថ្នាក់ទី៨",
   "language": "km",
   "cascadingHierarchy": [
     "ចំណងជើងជំពូក (Chapter Title: ជំពូកទី១ ដល់ ជំពូកទី៥)",
     "ចំណងជើងមេរៀន (Lesson Title: មេរៀនទី១ ដល់ មេរៀនទី១៨)",
-    "ចំណងជើងចំណុចរង (Sub-topic Title: ៤៦ ម៉ោងសិក្សា × ៥០ នាទី)"
+    "ចំណងជើងចំណុចរង (Sub-heading Title: ១.១. ដល់ ១៨.២. — ៤៦ ម៉ោងសិក្សា × ៥០ នាទី)"
   ],
   "totalChapters": 5,
   "totalLessons": 18,
@@ -19,6 +26,8 @@
     "widthMm": 297,
     "heightMm": 210,
     "paginatedDiscreteSheets": true,
+    "metaSectionLeftIndentMm": 8,
+    "metaLabelColumnWidthMm": 52,
     "marginsMm": {
       "top": 13,
       "right": 14,
@@ -26,19 +35,16 @@
       "left": 18
     }
   },
-  "headerOrder": [
-    "មុខវិជ្ជា",
-    "ថ្នាក់ទី",
-    "ជំពូកទី",
-    "មេរៀនទី",
-    "ខ្លឹមសារមេរៀន (ចំណុចរង)",
-    "រយៈពេល",
-    "ដកស្រង់ចេញពី",
-    "វិធីសាស្ត្របង្រៀន",
-    "វត្ថុបំណង (វិជ្ជាសម្បទា, បំណិនសម្បទា, ចរិយាសម្បទា)",
-    "សម្ភារៈឧបទ្ទេស (សម្រាប់គ្រូ, សម្រាប់សិស្ស) — ស្ថិតនៅក្រោមវត្ថុបំណងជានិច្ច",
-    "កាលបរិច្ឆេទ",
-    "ចំនួនសិស្សសរុប"
+  "page1MetaTableOrder": [
+    "- មុខវិជ្ជា ៖ គណិតវិទ្យា ថ្នាក់ទី៨",
+    "- ខ្លឹមសារមេរៀន ៖ មេរៀនទី... ...",
+    "- ចំណងជើងរង ៖ ១.១. ... (លេខមេរៀន.លេខចំណុចរង)",
+    "- រយៈពេល ៖ ៥០ នាទី",
+    "- បង្រៀនដោយ ៖ ...",
+    "- កាលបរិច្ឆេទ ៖ ថ្ងៃ.................. ទី...... ខែ.................. ឆ្នាំ២០២......",
+    "- វត្ថុបំណង ៖ ក្រោយពីរៀនចប់មេរៀននេះ សិស្សមានសមត្ថភាព ៖ (+ វិជ្ជាសម្បទា, + បំណិនសម្បទា, + ចរិយាសម្បទា)",
+    "- គោលវិធី និងយុទ្ធវិធីបង្រៀន ៖ (- គោលវិធី ៖ សិស្សមជ្ឈមណ្ឌល, - យុទ្ធវិធីបង្រៀន ៖ តាមបែបរិះរក (5E))",
+    "- សម្ភារៈឧបទ្ទេស ៖ (+ សម្រាប់គ្រូ, + សម្រាប់សិស្ស)"
   ],
   "tableColumns": [
     { "key": "teacherActivity", "label": "សកម្មភាពគ្រូ", "widthPercent": 28 },
@@ -47,29 +53,29 @@
   ],
   "steps": [
     { "step": 1, "title": "ជំហានទី១ ៖ រដ្ឋបាលថ្នាក់រៀន", "durationMinutes": 4, "bannerAlignment": "center" },
-    { "step": 2, "title": "ជំហានទី២ ៖ រំឭកមេរៀនចាស់ និងទំនាក់ទំនងមេរៀនថ្មី", "durationMinutes": 6, "bannerAlignment": "center" },
+    { "step": 2, "title": "ជំហានទី២ ៖ កិច្ចការផ្ទះ និងរំលឹកមេរៀនចាស់", "durationMinutes": 6, "bannerAlignment": "center" },
     {
       "step": 3,
-      "title": "ជំហានទី៣ ៖ មេរៀនប្រចាំថ្ងៃ (តាមលំនាំ 5E)",
+      "title": "ជំហានទី៣ ៖ មេរៀនថ្មី (បញ្ជ្រាបវិធីបង្រៀន 5E ៖ ដំណាក់កាលទី១ ទី២ និងទី៣)",
       "durationMinutes": 26,
       "bannerAlignment": "center",
       "phases5E": [
-        { "code": "E1", "name": "Engage — បំផុសគំនិត", "durationMinutes": 4 },
-        { "code": "E2", "name": "Explore — រុករកស្រាវជ្រាវ", "durationMinutes": 10 },
-        { "code": "E3", "name": "Explain — បកស្រាយពន្យល់ និងសំយោគបញ្ញត្តិ", "durationMinutes": 12 }
+        { "code": "E1", "name": "១. ដំណាក់កាលបំផុសចំណាប់អារម្មណ៍ (E1)", "durationMinutes": 4 },
+        { "code": "E2", "name": "២. ដំណាក់កាលរុករក និងស្រាវជ្រាវ (E2)", "durationMinutes": 10 },
+        { "code": "E3", "name": "៣. ដំណាក់កាលបកស្រាយ និងសំយោគ (E3)", "durationMinutes": 12 }
       ]
     },
     {
       "step": 4,
-      "title": "ជំហានទី៤ ៖ ពង្រឹងពុទ្ធិ និងវាយតម្លៃ",
+      "title": "ជំហានទី៤ ៖ ពង្រឹងពុទ្ធិ (បញ្ជ្រាបវិធីបង្រៀន 5E ៖ ដំណាក់កាលទី៤ និងទី៥)",
       "durationMinutes": 10,
       "bannerAlignment": "center",
       "phases5E": [
-        { "code": "E4", "name": "Elaborate — ពង្រីកចំណេះដឹង និងអនុវត្ត", "durationMinutes": 6 },
-        { "code": "E5", "name": "Evaluate — វាយតម្លៃលទ្ធផលសិក្សា", "durationMinutes": 4 }
+        { "code": "E4", "name": "៤. ដំណាក់កាលពង្រីកចំណេះដឹង (E4)", "durationMinutes": 6 },
+        { "code": "E5", "name": "៥. ដំណាក់កាលវាយតម្លៃលទ្ធផលសិក្សា (E5)", "durationMinutes": 4 }
       ]
     },
-    { "step": 5, "title": "ជំហានទី៥ ៖ បណ្ដាំផ្ញើ និងកិច្ចការផ្ទះ", "durationMinutes": 4, "bannerAlignment": "center" }
+    { "step": 5, "title": "ជំហានទី៥ ៖ កិច្ចការផ្ទះ និងបណ្តាំផ្ញើ", "durationMinutes": 4, "bannerAlignment": "center" }
   ],
   "mathRendering": {
     "engine": "KaTeX v0.16.11",

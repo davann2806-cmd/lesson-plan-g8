@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>កិច្ចតែងការបង្រៀនគណិតវិទ្យាថ្នាក់ទី៨ (សិស្សមជ្ឈមណ្ឌល, 5E, ក្រដាស A4 ផ្ដេក &amp; LaTeX)</title>
+  <title>កិច្ចតែងការបង្រៀន — អនុវិទ្យាល័យព្រះក្រសាំង (គណិតវិទ្យាថ្នាក់ទី៨ | ក្រដាស A4 ផ្ដេក, 5E &amp; LaTeX)</title>
   <meta
     name="description"
-    content="កម្មវិធីកិច្ចតែងការបង្រៀនគណិតវិទ្យាថ្នាក់ទី៨ ពេញលេញទាំង ១៨ មេរៀន (៤៦ ម៉ោងសិក្សា) ជ្រើសរើសតាមជំពូក មេរៀន និងចំណុចរង លើក្រដាស A4 ផ្ដេកបំបែកសន្លឹកដូចពេលព្រីន ជាមួយរូបមន្ត LaTeX (KaTeX) និងទាញយកជា Word (.doc)"
+    content="កម្មវិធីកិច្ចតែងការបង្រៀនគណិតវិទ្យាថ្នាក់ទី៨ ពេញលេញទាំង ១៨ មេរៀន (៤៦ ម៉ោងសិក្សា) សម្រាប់អនុវិទ្យាល័យព្រះក្រសាំង ជ្រើសរើសតាមជំពូក មេរៀន និងចំណងជើងរង លើក្រដាស A4 ផ្ដេកបំបែកសន្លឹកដូចពេលព្រីន ជាមួយរូបមន្ត LaTeX (KaTeX) និងទាញយកជា Word (.doc)"
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,19 +26,19 @@
   <!-- ១. របារឧបករណ៍ផ្នែកខាងលើ (លាក់ដោយស្វ័យប្រវត្តិពេលបោះពុម្ព Print / PDF) -->
   <header class="word-toolbar no-print">
     <div class="word-toolbar-brand">
-      <span class="word-badge" aria-hidden="true">G8</span>
+      <span class="word-badge" aria-hidden="true">W</span>
       <div>
-        <span class="word-doc-name">កិច្ចតែងការបង្រៀនគណិតវិទ្យាថ្នាក់ទី៨ (សិស្សមជ្ឈមណ្ឌល, 5E &amp; LaTeX)</span>
-        <span id="active-doc-sub" class="word-doc-sub">ជំពូកទី១ › មេរៀនទី១ › ម៉ោងទី១</span>
+        <span class="word-doc-name">កិច្ចតែងការបង្រៀន — អនុវិទ្យាល័យព្រះក្រសាំង (គណិតវិទ្យាថ្នាក់ទី៨ • ក្រដាស A4 ផ្ដេក + LaTeX)</span>
+        <span id="active-doc-sub" class="word-doc-sub">អនុវិទ្យាល័យព្រះក្រសាំង — ជំពូកទី១ › មេរៀនទី១ › ១.១.</span>
       </div>
     </div>
 
     <div class="word-toolbar-actions">
       <span id="page-count-badge" class="page-count-pill">📄 កំពុងរៀបសន្លឹកក្រដាស...</span>
-      <button id="btn-toggle-search" class="toolbar-btn" type="button" title="ស្វែងរកមេរៀន ឬចំណុចរងទាំង ៤៦ ម៉ោង">
+      <button id="btn-toggle-search" class="toolbar-btn" type="button" title="ស្វែងរកមេរៀន ឬចំណងជើងរងទាំង ៤៦ ម៉ោង">
         🔎 ស្វែងរករហ័ស
       </button>
-      <button id="btn-toggle-profile" class="toolbar-btn" type="button" title="បំពេញឈ្មោះសាលា និងឈ្មោះគ្រូដោយស្វ័យប្រវត្តិគ្រប់មេរៀន">
+      <button id="btn-toggle-profile" class="toolbar-btn" type="button" title="កែប្រែឈ្មោះគ្រូ កាលបរិច្ឆេទ ឬសាលាដោយស្វ័យប្រវត្តិគ្រប់មេរៀន">
         👤 ព័ត៌មានគ្រូ/សាលា
       </button>
       <button id="btn-toggle-zoom" class="toolbar-btn" type="button">
@@ -59,8 +59,8 @@
     </div>
   </header>
 
-  <!-- ២. របារជ្រើសរើសមេរៀនបន្តតាមប្រភេទ (SPA Cascading Selector ៖ ជំពូក › មេរៀន › ចំណុចរង) -->
-  <nav class="cascade-selector-bar no-print" aria-label="ការជ្រើសរើសកិច្ចតែងការតាមជំពូក មេរៀន និងចំណុចរង">
+  <!-- ២. របារជ្រើសរើសមេរៀនបន្តតាមប្រភេទ (SPA Cascading Selector ៖ ជំពូក › មេរៀន › ចំណងជើងរង) -->
+  <nav class="cascade-selector-bar no-print" aria-label="ការជ្រើសរើសកិច្ចតែងការតាមជំពូក មេរៀន និងចំណងជើងរង">
     <div class="cascade-inner">
       <div class="cascade-step">
         <label class="cascade-label" for="select-chapter">
@@ -81,7 +81,7 @@
       <div class="cascade-step cascade-step-subtopic">
         <label class="cascade-label" for="select-subtopic">
           <span class="step-chip">៣</span>
-          <span>ចំណងជើងចំណុចរង (ម៉ោងសិក្សា ៥០ នាទី)</span>
+          <span>ចំណងជើងចំណុចរង (៥០ នាទី)</span>
         </label>
         <select id="select-subtopic" class="cascade-select" aria-label="ជ្រើសរើសចំណងជើងចំណុចរង"></select>
       </div>
@@ -99,12 +99,12 @@
   </nav>
 
   <!-- ៣. ផ្ទាំងស្វែងរករហ័សតាមពាក្យគន្លឹះ (លាក់ដោយស្វ័យប្រវត្តិពេលបោះពុម្ព) -->
-  <section id="quick-search-panel" class="utility-drawer no-print" hidden aria-label="ស្វែងរកមេរៀន និងចំណុចរង">
+  <section id="quick-search-panel" class="utility-drawer no-print" hidden aria-label="ស្វែងរកមេរៀន និងចំណងជើងរង">
     <div class="utility-drawer-inner">
       <div class="drawer-header">
         <div>
           <p class="drawer-title">ស្វែងរករហ័សក្នុងចំណោមទាំង ៥ ជំពូក • ១៨ មេរៀន • ៤៦ ចំណុចរង</p>
-          <span class="drawer-hint">វាយឈ្មោះជំពូក មេរៀន ចំណុចរង ឬលេខទំព័រសៀវភៅសិក្សាគោល រួចចុចជ្រើសរើស។</span>
+          <span class="drawer-hint">វាយឈ្មោះជំពូក មេរៀន ចំណងជើងរង (ឧ. ១.៤.) ឬពាក្យគន្លឹះ រួចចុចជ្រើសរើស។</span>
         </div>
         <span id="search-count-label" class="period-counter-badge">៤៦ ចំណុចរង</span>
       </div>
@@ -112,56 +112,56 @@
         id="quick-search-input"
         class="quick-search-input"
         type="search"
-        placeholder="ឧ. ចំនួនសនិទាន, ការេទ្វេធា, វិសមីការ, ប្រូបាប, ត្រីកោណប៉ុនគ្នា, ស៊ីឡាំង, មាត្រដ្ឋាន..."
+        placeholder="ឧ. ១.៤., ចំនួនសនិទាន, សមភាពពិសេស, វិសមីការ, ប្រូបាប, ត្រីកោណប៉ុនគ្នា, ស៊ីឡាំង, មាត្រដ្ឋាន..."
       />
       <div id="quick-search-results" class="search-results-grid"></div>
     </div>
   </section>
 
-  <!-- ៤. ផ្ទាំងបំពេញព័ត៌មានគ្រូ និងសាលារៀនរួម (បំពេញម្តង អនុវត្តគ្រប់មេរៀនទាំង ៤៦ ម៉ោង) -->
+  <!-- ៤. ផ្ទាំងបំពេញព័ត៌មានគ្រូ និងសាលារៀនរួម (លំនាំដើម៖ អនុវិទ្យាល័យព្រះក្រសាំង ស្រុកកំពង់ស្វាយ ខេត្តកំពង់ធំ) -->
   <section id="teacher-profile-panel" class="utility-drawer no-print" hidden aria-label="ព័ត៌មានគ្រូ និងសាលារៀន">
     <div class="utility-drawer-inner">
       <div class="drawer-header">
         <div>
-          <p class="drawer-title">ព័ត៌មានរដ្ឋបាលសាលា និងគ្រូបង្រៀន (បំពេញម្តង អនុវត្តគ្រប់ជំពូក និងគ្រប់មេរៀន)</p>
-          <span class="drawer-hint">ទុកទទេប្រសិនបើចង់បង្ហាញចំណុចចុចៗ (...............) សម្រាប់សរសេរដៃក្រោយពេលបោះពុម្ព។</span>
+          <p class="drawer-title">ព័ត៌មានរដ្ឋបាលសាលា និងគ្រូបង្រៀន (លំនាំដើម ៖ អនុវិទ្យាល័យព្រះក្រសាំង ស្រុកកំពង់ស្វាយ ខេត្តកំពង់ធំ)</p>
+          <span class="drawer-hint">បំពេញឈ្មោះគ្រូ ឬកាលបរិច្ឆេទដើម្បីបង្ហាញស្វ័យប្រវត្តិគ្រប់មេរៀនទាំង ៤៦ ម៉ោង (ទុកទទេសម្រាប់ចំណុចចុចៗសរសេរដៃ)។</span>
         </div>
         <button id="btn-clear-profile" type="button" class="nav-step-btn">
-          សម្អាតព័ត៌មានរួម
+          កំណត់លំនាំដើមវិញ
         </button>
       </div>
       <div class="profile-grid">
         <div class="profile-field">
-          <label for="prof-province">រាជធានី / ខេត្ត</label>
-          <input id="prof-province" type="text" placeholder="ឧ. ខេត្តកំពង់ធំ" />
+          <label for="prof-province">មន្ទីរអប់រំ យុវជន និងកីឡា</label>
+          <input id="prof-province" type="text" placeholder="ខេត្តកំពង់ធំ (លំនាំដើម)" />
         </div>
         <div class="profile-field">
-          <label for="prof-district">ក្រុង / ស្រុក / ខណ្ឌ</label>
-          <input id="prof-district" type="text" placeholder="ឧ. ស្រុកកំពង់ស្វាយ" />
+          <label for="prof-district">ការិយាល័យអប់រំ យុវជន និងកីឡា</label>
+          <input id="prof-district" type="text" placeholder="ស្រុកកំពង់ស្វាយ (លំនាំដើម)" />
         </div>
         <div class="profile-field">
-          <label for="prof-school">វិទ្យាល័យ / អនុវិទ្យាល័យ</label>
-          <input id="prof-school" type="text" placeholder="ឧ. អនុវិទ្យាល័យព្រះក្រសាំង" />
+          <label for="prof-school">សាលារៀន</label>
+          <input id="prof-school" type="text" placeholder="អនុវិទ្យាល័យព្រះក្រសាំង (លំនាំដើម)" />
         </div>
         <div class="profile-field">
           <label for="prof-teacher">ឈ្មោះគ្រូបង្រៀន</label>
-          <input id="prof-teacher" type="text" placeholder="ឧ. លោកគ្រូ ដាវណ្ណ" />
+          <input id="prof-teacher" type="text" placeholder="ទុកទទេសម្រាប់ចំណុចចុចៗ ............" />
         </div>
         <div class="profile-field">
           <label for="prof-date">កាលបរិច្ឆេទបង្រៀន</label>
-          <input id="prof-date" type="text" placeholder="ឧ. ថ្ងៃអង្គារ ទី១០ ខែវិច្ឆិកា ឆ្នាំ២០២៦" />
+          <input id="prof-date" type="text" placeholder="ថ្ងៃ.................. ទី...... ខែ.................. ឆ្នាំ២០២......" />
         </div>
         <div class="profile-field">
           <label for="prof-students">ចំនួនសិស្សសរុប (និងសិស្សស្រី)</label>
-          <input id="prof-students" type="text" placeholder="ឧ. ៤០ នាក់ (ស្រី ២១ នាក់)" />
+          <input id="prof-students" type="text" placeholder="......... នាក់ (ស្រី ......... នាក់)" />
         </div>
         <div class="profile-field">
           <label for="prof-lunar">កាលបរិច្ឆេទចន្ទគតិ (ហត្ថលេខា)</label>
-          <input id="prof-lunar" type="text" placeholder="ឧ. ថ្ងៃអង្គារ ១កើត ខែមិគសិរ ឆ្នាំមមី ព.ស. ២៥៧០" />
+          <input id="prof-lunar" type="text" placeholder="ថ្ងៃ.................. ខែ............ ឆ្នាំ......... ព.ស. ២៥៦..." />
         </div>
         <div class="profile-field">
           <label for="prof-signdate">ទីកន្លែង និងថ្ងៃខែឆ្នាំចុះហត្ថលេខា</label>
-          <input id="prof-signdate" type="text" placeholder="ឧ. ព្រះក្រសាំង, ថ្ងៃទី១០ ខែវិច្ឆិកា ឆ្នាំ២០២៦" />
+          <input id="prof-signdate" type="text" placeholder="ធ្វើនៅព្រះក្រសាំង ថ្ងៃទី...... ខែ............ ឆ្នាំ២០២..." />
         </div>
       </div>
     </div>
@@ -169,10 +169,6 @@
 
   <!-- ៥. ផ្ទៃបង្ហាញសន្លឹកក្រដាស A4 ផ្ដេកបំបែកដាច់ៗពីគ្នាដូចពេលបោះពុម្ព (1-to-1 Paginated Word Desk) -->
   <main class="desk-viewport">
-    <!-- ចំណងជើង H1 តែមួយគត់សម្រាប់ Semantic Document Accessibility -->
-    <h1 class="no-print" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">
-      កិច្ចតែងការបង្រៀនគណិតវិទ្យាថ្នាក់ទី៨ តាមគោលវិធីសិស្សមជ្ឈមណ្ឌល និងវិធីបង្រៀន 5E
-    </h1>
     <div id="page-scale-shell" class="page-scale-shell">
       <div id="pages-stack" class="pages-stack"></div>
     </div>
